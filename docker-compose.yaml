@@ -1,0 +1,60 @@
+name: "bibsy-server"
+
+services:
+  proxy:
+    image: caddy:alpine
+    container_name: "proxy"
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./caddy-config:/config
+      - ./caddy-data:/data
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+  database:
+    image: postgres
+    container_name: "database"
+    restart: unless-stopped
+    user: postgres
+    environment:
+      POSTGRES_PASSWORD: melker
+      POSTGRES_DB: school
+      TZ: Europe/Stockholm
+      PGTZ: Europe/Stockholm
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    container_name: "adminer"
+    profiles:
+      - debug
+    depends_on:
+      database:
+        condition: service_started
+    ports:
+      - 8080:8080
+  api:
+    build: ./backend/
+    container_name: "api"
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  caddy-config:
+  caddy-data:
+  pgdata:
+

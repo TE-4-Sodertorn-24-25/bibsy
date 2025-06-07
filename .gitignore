@@ -1,0 +1,6 @@
+/caddy-config
+/caddy-data
+/pgdata
+/database.sql
+migration.sql
+.env
