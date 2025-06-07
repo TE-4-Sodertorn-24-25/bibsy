@@ -1,0 +1,18 @@
+:80 {
+	header Access-Control-Allow-Origin *
+    header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE"
+    header Access-Control-Allow-Headers "Content-Type"
+    header Access-Control-Max-Age "3600"
+
+  	handle_path /api* {
+		reverse_proxy * api:3000
+	}
+	
+	handle {
+		respond "hello world"
+	}
+
+	log {
+		output stdout
+	}
+}

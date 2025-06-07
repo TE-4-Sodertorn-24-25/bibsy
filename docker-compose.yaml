@@ -34,13 +34,9 @@ services:
     image: adminer
     restart: always
     container_name: "adminer"
-    profiles:
-      - debug
     depends_on:
       database:
         condition: service_started
-    ports:
-      - 8080:8080
   api:
     build: ./backend/
     container_name: "api"

@@ -1,0 +1,7 @@
+[submodule "backend"]
+	path = backend
+	branch = moved-stuff
+	url = https://github.com/TE-4-Sodertorn-24-25/bibsy-server
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/TE-4-Sodertorn-24-25/bibsy-client-react
