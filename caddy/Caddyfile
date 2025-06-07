@@ -9,7 +9,7 @@
 	}
 	
 	handle {
-		respond "hello world"
+		reverse_proxy * frontend:3000
 	}
 
 	log {

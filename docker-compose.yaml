@@ -5,9 +5,15 @@ services:
     image: caddy:alpine
     container_name: "proxy"
     restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+      frontend:
+        condition: service_started
     ports:
       - 80:80
     volumes:
+      - ./frontend/dist:/srv
       - ./caddy-config:/config
       - ./caddy-data:/data
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
@@ -48,7 +54,9 @@ services:
     depends_on:
       database:
         condition: service_healthy
-
+  frontend:
+    container_name: "frontend"
+    build: ./frontend/
 volumes:
   caddy-config:
   caddy-data:
