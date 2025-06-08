@@ -8,8 +8,6 @@ services:
     depends_on:
       api:
         condition: service_started
-      frontend:
-        condition: service_started
     ports:
       - 80:80
     volumes:
@@ -40,6 +38,8 @@ services:
     image: adminer
     restart: always
     container_name: "adminer"
+    ports:
+      - 8080:8080
     depends_on:
       database:
         condition: service_started
